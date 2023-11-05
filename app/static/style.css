@@ -1,0 +1,79 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+}
+
+.title-bar {
+    background-color: #5b8c85;
+    color: #ffffff;
+    padding: 15px 10px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.container {
+    width: 80%;
+    margin: 30px auto;
+    overflow: hidden;
+}
+
+.register-container {
+    background: #ffffff;
+    margin-top: 15px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.register {
+    display: contents;
+}
+
+.register-id,
+.register-value,
+.register-comment {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.register-id {
+    font-weight: bold;
+}
+
+.message {
+    padding: 20px; /* Increase padding */
+    margin-bottom: 20px; /* Increase margin-bottom */
+    border-radius: 5px;
+    text-align: center;
+    font-size: 48px; /* Increase font size */
+    font-weight: bold; /* Make it bold */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: add a shadow to lift the message */
+}
+
+.default-color {
+    background-color: #e7eff6;
+    color: #333;
+}
+
+.register-color {
+    /* Updated style for message with an alarming yellow */
+    background-color: #ffecb3;
+    color: #c48800;
+    border: 1px solid #ffc107; /* Optional: add a border for more emphasis */
+}
+
+.error-color {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+.register-header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}

@@ -1,0 +1,20 @@
+robot:
+  ip: "172.18.1.201"
+displayed_registers:
+  numeric:
+    - 10
+    - 31
+    - 89
+    - 90
+    - 21 
+  string:
+fetch_intervals:
+  seconds_numeric: 2
+  seconds_string: 60
+quote_api_url: "https://api.quotable.io/random"
+cache_timeout_seconds: 3600
+trigger:
+  value: 1
+  register_id: 10
+  
+

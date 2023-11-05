@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fanuc Robot Interface</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://unpkg.com/htmx.org@1.6.0"></script>
+    <script>
+        document.addEventListener('keydown', function (event) {
+            if (/^[a-z]$/i.test(event.key)) { // This regex matches any single character from a to z, case insensitive
+                fetch('/keypress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ key: event.key.toLowerCase() })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => console.log(data))
+                .catch(error => console.error('Fetch error:', error));
+            }
+        });
+    </script>    
+</head>
+<body>
+    <!-- This div will be replaced entirely by htmx -->
+    <div id="message-container" hx-get="/update-message" hx-trigger="load, every 2s" hx-swap="outerHTML">
+        <!-- The server will return the entire .title-bar with the message inside -->
+    </div>
+
+    <div class="container">
+        <div id="numeric-registers" hx-get="/update-data" hx-trigger="load, every 2s" hx-swap="outerHTML" class="register-container">
+            <!-- Numeric register data will be loaded here by htmx -->
+        </div>
+    </div>
+</body>
+</html>
