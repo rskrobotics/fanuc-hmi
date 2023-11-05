@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
-from app.mocks.mock_string_response import MockStringResponse
-from app.domain.string_register import StringRegister
+from mocks.mock_string_response import MockStringResponse
+from domain.string_register import StringRegister
 
 
 def parse_html_content_onto_string_registers(html_content):

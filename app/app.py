@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, current_app
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask_caching import Cache
 import requests
@@ -13,7 +13,7 @@ robot_service = RobotService(ip_address=config_service.get('robot.ip'))
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=robot_service.fetch_numeric_registers,
-                  trigger='interval', seconds=config_service.get('fetch_intervals.seconds_numeric'))
+                  trigger='interval', seconds=config_service.get('fetch_intervals.seconds_numeric', 5))
 
 scheduler.add_job(
     func=robot_service.fetch_string_registers,
@@ -33,17 +33,19 @@ cache = Cache(app)
 def index():
     return render_template('index.html')
 
-
+@cache.cached(timeout=0)
 @app.route('/update-data')
 def update_data():
-    all_numeric_registers = robot_service.numeric_registers
+    current_app.logger.info("Update - data called")
+    all_numeric_registers = robot_service.get_numeric_registers()
+    print(f"Numeric register in update-data: {all_numeric_registers[30]}")
     displayed_numeric_indices = config_service.get(
         'displayed_registers.numeric')
     numeric_registers = [
         reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices]
     return render_template('numeric_registers.html', numeric_registers=numeric_registers)
 
-
+@cache.cached(timeout=0)
 @app.route('/update-message')
 def update_message():
     quote_api_url = config_service.get(
@@ -66,9 +68,9 @@ def update_message():
             message = "Default Message"
             cache.set('cached_message', message, timeout=cache_timeout)
 
-    string_register_index = next(
+    string_register_index = int(next(
         (reg.value for reg in robot_service.numeric_registers if reg.id == 31), 0
-    )
+    ))
 
     if string_register_index > 0:
         try:

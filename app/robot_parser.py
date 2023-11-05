@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
+from 
 
 @dataclass
 class StringRegister:

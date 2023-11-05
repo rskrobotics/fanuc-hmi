@@ -3,6 +3,9 @@ import requests
 from threading import Lock
 from domain.numeric_register import NumericRegister
 from domain.string_register import StringRegister
+from numeric_register_parser import parse_html_content_onto_numeric_registers
+from string_register_parser import parse_html_content_onto_string_registers
+import copy
 
 
 class RobotService:
@@ -15,21 +18,30 @@ class RobotService:
             id=i+1, value=f"Message {i+1}", comment=f"Comment {i+1}") for i in range(25)]
 
     def fetch_numeric_registers(self):
+        print("Fetching numeric registers...")
         numeric_url = f'http://{self.ip_address}/karel/ComGet?sFc=28'
         try:
             response = requests.get(numeric_url)
+            print("Got a response...")
             if response.status_code == 200:
                 with self.lock:
                     new_values = self.parse_numeric_registers(response.text)
-                    for i, value in enumerate(new_values):
-                        self.numeric_registers[i].value = value
+                    for i, element in enumerate(new_values):
+                        self.numeric_registers[i].value = element.value
+                        self.numeric_registers[i].comment = element.comment
+                        if element.id == 31:
+                            print(f"Value of register 31 is: {element}")
+                    print(f"Robot state is: {self.numeric_registers[30]}")
+
             else:
                 print(
                     f"Error fetching numeric registers: {response.status_code}")
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
+        print("Finishing fetching numeric registers...")
 
     def fetch_string_registers(self):
+        print("Fetching string registers...")
         string_url = f'http://{self.ip_address}/karel/ComGet?sFc=30'
         try:
             response = requests.get(string_url)
@@ -37,12 +49,13 @@ class RobotService:
                 with self.lock:
                     new_values = self.parse_string_registers(response.text)
                     for i, value in enumerate(new_values):
-                        self.string_registers[i].value = value
+                        self.string_registers[i] = value
             else:
                 print(
                     f"Error fetching string registers: {response.status_code}")
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
+        print(f"Finished fetching string registers...")
 
     def get_robot_data(self):
         with self.lock:
@@ -70,8 +83,13 @@ class RobotService:
         except requests.exceptions.RequestException as e:
             print(f"Setting register value failed: {e}")
 
-    def parse_numeric_registers(self, response_text):
-        pass
+    @staticmethod
+    def parse_numeric_registers(response_text):
+        return parse_html_content_onto_numeric_registers(response_text)
 
-    def parse_string_registers(self, response_text):
-        pass
+    @staticmethod
+    def parse_string_registers(response_text):
+        return parse_html_content_onto_string_registers(response_text)
+    
+    def get_numeric_registers(self):
+        return self.numeric_registers
