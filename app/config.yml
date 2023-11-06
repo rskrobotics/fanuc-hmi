@@ -11,7 +11,7 @@ displayed_registers:
 fetch_intervals:
   seconds_numeric: 1
   seconds_string: 60
-quote_api_url: "https://api.quotable.io/random"
+quote_api_url: "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json"
 cache_timeout_seconds: 3600
 trigger:
   value: 1

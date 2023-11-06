@@ -76,7 +76,7 @@ def update_data():
 @app.route('/update-message')
 def update_message():
     quote_api_url = config_service.get(
-        'quote_api_url', "https://api.quotable.io/random")
+        'quote_api_url', "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json")
     message = cache.get('cached_message')
     template_color_class = 'default-color'
 
@@ -85,7 +85,9 @@ def update_message():
             response = requests.get(quote_api_url)
             if response.status_code == 200:
                 quote_data = response.json()
-                message = quote_data.get('content')
+                message = quote_data.get('quoteText')
+                if quote_data.get('quoteAuthor'):
+                    message += f" - {quote_data.get('quoteAuthor')}"
                 cache.set('cached_message', message, timeout=cache_timeout)
             else:
                 message = "Default Message"
