@@ -62,25 +62,32 @@ class RobotService:
 
     def set_numeric_register_value(self, register_index, value):
         if self.mock_data:
-            logger.info("Triggering in mock...")
+            logger.info("Mock data mode is on. Triggering in mock...")
             return
         set_url = f'http://{self.ip_address}/karel/ComSet'
-        data = {
+        params = {
             'sFc': '2',
-            'sIndx': register_index,
-            'sValue': value,
+            'sIndx': str(register_index),
+            'sValue': str(value),
             'sRealFlag': '-1'
         }
-        try:
-            response = requests.post(set_url, params=data,
-                                     timeout=2)
 
+        logger.info(f"Sending request to {set_url} with params {params}")
+
+        try:
+            response = requests.get(set_url, params=params, timeout=2)  # Using GET as per the curl example
+
+            logger.info(f"Response status code: {response.status_code}")
             if response.status_code == 200:
-                logger.info("Successfully sent trigger request")
+                logger.info("Successfully set register value")
             else:
-                logger.error(f"Failed to set register value. Status code: {response.status_code}")
+                logger.error(f"Failed to set register value. Response status code: {response.status_code}")
+                logger.error(f"Response text: {response.text}")  # This will log the server's response message
         except requests.exceptions.RequestException as e:
             logger.error(f"Setting register value failed: {e}")
+
+        except Exception as e:
+            logger.error(f"An unexpected error occurred: {e}")
 
     @staticmethod
     def parse_numeric_registers(response_text):
