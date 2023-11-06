@@ -9,10 +9,16 @@ body {
 .title-bar {
     background-color: #5b8c85;
     color: #ffffff;
-    padding: 45px 30px; /* Increased from 15px 10px */
+    padding: 45px 30px; /* Adjust padding as needed */
     text-align: center;
-    font-size: 84px; /* Increased from 28px */
+    /* Responsive font size with a range between a minimum and a maximum */
+    font-size: clamp(2rem, 2.5vw + 1rem, 84px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures the text doesn't exceed the title bar */
 }
+
 
 .container {
     width: 80%; /* You may want to adjust this if the content doesn't scale as expected */
@@ -25,7 +31,7 @@ body {
     margin-top: 15px; /* Increased from 15px */
     padding: 20px; /* Increased from 20px */
     border-radius: 15px; /* Increased from 5px */
-    box-shadow: 0 15px 15px rgba(0,0,0,0.15); /* Increased the spread and blur */
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.15); /* Increased the spread and blur */
     display: grid;
     grid-template-columns: auto auto 1fr;
     gap: 10px; /* Increased from 10px */
@@ -54,7 +60,7 @@ body {
     text-align: center;
     font-size: 144px; /* Increased from 48px */
     font-weight: bold; /* Keep it bold */
-    box-shadow: 0 12px 24px rgba(0,0,0,0.3); /* Increased shadow for more emphasis */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Increased shadow for more emphasis */
 }
 
 .default-color {
