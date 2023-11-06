@@ -44,7 +44,7 @@ body {
     margin-bottom: 10px;
     border-radius: 15px;
     text-align: center;
-    font-size: clamp(2vw, 5vh, 10vw); /* Adjust values accordingly */
+    font-size: calc(40vh * 0.8); /* 80% of 50% of the viewport height */
     font-weight: bold;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     width: 100%; /* Takes full width */
@@ -54,6 +54,7 @@ body {
     align-items: center; /* This will center the text vertically and horizontally */
     overflow: hidden; /* Hide overflow */
 }
+
 
 
 
