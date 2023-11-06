@@ -1,25 +1,52 @@
+import logging
+import string
 from datetime import datetime
-from flask import Flask, render_template, jsonify, request, current_app
-from apscheduler.schedulers.background import BackgroundScheduler
-from flask_caching import Cache
+from logging.handlers import RotatingFileHandler
+
 import requests
-from robot_service import RobotService
+from apscheduler.schedulers.background import BackgroundScheduler
+from flask import Flask, render_template, jsonify, request
+from flask_caching import Cache
+
 from config_service import ConfigService
+from robot_service import RobotService
 
 app = Flask(__name__)
-config_service = ConfigService()
-robot_service = RobotService(ip_address=config_service.get('robot.ip'))
 
+logging.basicConfig(level=logging.INFO)
+
+handler = RotatingFileHandler(
+    'hmi.log', maxBytes=10000, backupCount=3
+)
+formatter = logging.Formatter(
+    '%(asctime)s %(levelname)s: %(message)s [in %(module)s:%(lineno)d]'
+)
+handler.setFormatter(formatter)
+handler.setLevel(logging.DEBUG)
+root_logger = logging.getLogger()
+root_logger.addHandler(handler)
+root_logger.setLevel(logging.DEBUG)
+logging.getLogger('apscheduler').setLevel(logging.WARNING)
+
+logger = logging.getLogger(__name__)
+logger.debug('This is a debug message that will go into the hmi.log file')
+
+config_service = ConfigService()
+robot_service = RobotService(ip_address=config_service.get('robot.ip'),
+                             mock_data=config_service.get('mock_robot_data', True))
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=robot_service.fetch_numeric_registers,
-                  trigger='interval', seconds=config_service.get('fetch_intervals.seconds_numeric', 5))
+                  trigger='interval', seconds=config_service.get('fetch_intervals.seconds_numeric'),
+                  max_instances=1
+                  )
 
 scheduler.add_job(
     func=robot_service.fetch_string_registers,
     trigger='interval',
     seconds=config_service.get('fetch_intervals.seconds_string'),
-    next_run_time=datetime.now()
+    next_run_time=datetime.now(),
+    max_instances=1
 )
 
 cache_timeout = config_service.get('cache_timeout_seconds', 3600)
@@ -33,19 +60,17 @@ cache = Cache(app)
 def index():
     return render_template('index.html')
 
-@cache.cached(timeout=0)
+
 @app.route('/update-data')
 def update_data():
-    current_app.logger.info("Update - data called")
     all_numeric_registers = robot_service.get_numeric_registers()
-    print(f"Numeric register in update-data: {all_numeric_registers[30]}")
     displayed_numeric_indices = config_service.get(
         'displayed_registers.numeric')
     numeric_registers = [
         reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices]
     return render_template('numeric_registers.html', numeric_registers=numeric_registers)
 
-@cache.cached(timeout=0)
+
 @app.route('/update-message')
 def update_message():
     quote_api_url = config_service.get(
@@ -64,7 +89,7 @@ def update_message():
                 message = "Default Message"
                 cache.set('cached_message', message, timeout=cache_timeout)
         except requests.RequestException as e:
-            print(f"Request failed: {e}")
+            logger.error(f"Request failed: {e}")
             message = "Default Message"
             cache.set('cached_message', message, timeout=cache_timeout)
 
@@ -99,27 +124,22 @@ def update_message():
 @app.route('/keypress', methods=['POST'])
 def keypress():
     data = request.get_json()
-    if data and data['key'] == 'z':
-        print("Z key was pressed")
-        robot_service.set_numeric_register_value(register_index=config_service.get(
-            'trigger.register_id'), value=config_service.get('trigger.value'))
+    if data and data['key'].lower() in string.ascii_lowercase:
+        logger.info(f"{data['key']} key was pressed")
+        robot_service.set_numeric_register_value(
+            register_index=config_service.get('trigger.register_id'),
+            value=config_service.get('trigger.value')
+        )
         return jsonify({"status": "success"}), 200
     else:
-        print("Invalid key was pressed")
+        logger.warning("Invalid key was pressed")
         return jsonify({"error": "Invalid key pressed"}), 400
-
-
-@app.teardown_appcontext
-def shutdown_scheduler(response_or_exc):
-    if response_or_exc is None and scheduler.running:
-        scheduler.shutdown()
-    return response_or_exc
 
 
 if __name__ == '__main__':
     scheduler.start()
     try:
-        app.run(debug=True, host='0.0.0.0')
+        app.run(debug=False, threaded=True, host='0.0.0.0', use_reloader=False)
     except (KeyboardInterrupt, SystemExit):
         pass
     finally:

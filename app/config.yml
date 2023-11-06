@@ -9,12 +9,13 @@ displayed_registers:
     - 21 
   string:
 fetch_intervals:
-  seconds_numeric: 5
+  seconds_numeric: 1
   seconds_string: 60
 quote_api_url: "https://api.quotable.io/random"
 cache_timeout_seconds: 3600
 trigger:
   value: 1
   register_id: 10
+mock_robot_data: True
   
 

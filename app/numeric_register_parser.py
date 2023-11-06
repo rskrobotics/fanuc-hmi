@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
-from dataclasses import dataclass
-from mocks.mock_numeric_response import MockNumericResponse
+
 from domain.numeric_register import NumericRegister
+from mocks.mock_numeric_response import MockNumericResponse
+
 
 def parse_html_content_onto_numeric_registers(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -28,10 +29,10 @@ def parse_html_content_onto_numeric_registers(html_content):
 
     return registers
 
+
 if __name__ == '__main__':
     html_content = MockNumericResponse
     registers = parse_html_content_onto_numeric_registers(html_content)
-    
+
     for reg in registers:
         print(reg)
-

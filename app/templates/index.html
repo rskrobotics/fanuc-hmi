@@ -29,12 +29,12 @@
 </head>
 <body>
     <!-- This div will be replaced entirely by htmx -->
-    <div id="message-container" hx-get="/update-message" hx-trigger="load, every 2s" hx-swap="outerHTML">
+    <div id="message-container" hx-get="/update-message" hx-trigger="load, every 2s" hx-swap="innerHTML">
         <!-- The server will return the entire .title-bar with the message inside -->
     </div>
-
+      
     <div class="container">
-        <div id="numeric-registers" hx-get="/update-data" hx-trigger="load, every 2s" hx-swap="outerHTML" class="register-container">
+        <div id="numeric-registers" hx-get="/update-data" hx-trigger="load, every 2s" hx-swap="innerHTML" class="register-container">
             <!-- Numeric register data will be loaded here by htmx -->
         </div>
     </div>

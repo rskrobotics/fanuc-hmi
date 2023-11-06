@@ -1,6 +1,7 @@
 import yaml
 import os
 
+
 class ConfigService:
     def __init__(self, config_file='config.yml'):
         self.config_file = config_file
@@ -12,7 +13,6 @@ class ConfigService:
 
         with open(self.config_file, 'r') as file:
             return yaml.safe_load(file)
-        
 
     def get(self, property_path, default=None):
         keys = property_path.split('.')
@@ -23,4 +23,3 @@ class ConfigService:
             else:
                 return default
         return value
-
