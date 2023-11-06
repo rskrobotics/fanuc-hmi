@@ -64,14 +64,16 @@ class RobotService:
         if self.mock_data:
             logger.info("Triggering in mock...")
             return
-        set_url = f'http://{self.ip_address}/karel/ComGet'
+        set_url = f'http://{self.ip_address}/karel/ComSet'
         data = {
-            'sFc': '3',
-            'sRegIdx': register_index,
-            'sValue': value
+            'sFc': '2',
+            'sIndx': register_index,
+            'sValue': value,
+            'sRealFlag': '-1'
         }
         try:
-            response = requests.post(set_url, data=data, timeout=2)
+            response = requests.post(set_url, params=data,
+                                     timeout=2)
 
             if response.status_code == 200:
                 logger.info("Successfully sent trigger request")
