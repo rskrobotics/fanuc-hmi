@@ -6,20 +6,6 @@ body {
     /* The font size is not specified here; if you want all text 3x bigger, you may need to set a base font size here */
 }
 
-.title-bar {
-    background-color: #5b8c85;
-    color: #ffffff;
-    padding: 45px 30px; /* Adjust padding as needed */
-    text-align: center;
-    /* Responsive font size with a range between a minimum and a maximum */
-    font-size: clamp(2rem, 2.5vw + 1rem, 84px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Ensures the text doesn't exceed the title bar */
-}
-
-
 .container {
     width: 80%; /* You may want to adjust this if the content doesn't scale as expected */
     margin: 90px auto; /* Increased from 30px */
@@ -54,14 +40,20 @@ body {
 }
 
 .message {
-    padding: 60px; /* Increased from 20px */
-    margin-bottom: 60px; /* Increased from 20px */
-    border-radius: 15px; /* Increased from 5px */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
     text-align: center;
-    font-size: 144px; /* Increased from 48px */
-    font-weight: bold; /* Keep it bold */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Increased shadow for more emphasis */
+    font-size: calc(1vw + 4vh); /* Scales primarily with screen height */
+    /*font-size: min(max(24px, 8vh), 5vw); !* Clamps the font size between 24px and the smaller of 8vh or 5vw *!*/
+    font-weight: bold;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    width: 100%; /* Takes full width */
+    max-height: 50vh; /* Maximum half of the viewport height */
+    overflow: hidden; /* Hides the overflowed content, could be 'auto' to show a scrollbar if needed */
 }
+
+
 
 .default-color {
     background-color: #e7eff6;
