@@ -48,7 +48,7 @@ body {
     font-weight: bold;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     width: 100%; /* Takes full width */
-    max-height: 50vh; /* Maximum half of the viewport height */
+    height: 50%; /
     overflow: hidden; /* Hides the overflowed content, could be 'auto' to show a scrollbar if needed */
 }
 
