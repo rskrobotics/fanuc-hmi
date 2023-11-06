@@ -1,5 +1,7 @@
 import logging
 import string
+import threading
+import time
 from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
 
@@ -124,13 +126,27 @@ def update_message():
 @app.route('/keypress', methods=['POST'])
 def keypress():
     data = request.get_json()
+
     if data and data['key'].lower() in string.ascii_lowercase:
         logger.info(f"{data['key']} key was pressed")
         robot_service.set_numeric_register_value(
             register_index=config_service.get('trigger.register_id'),
             value=config_service.get('trigger.value')
         )
+
+        def reset_value():
+            time.sleep(config_service.get('trigger.revert_delay_seconds'))
+            robot_service.set_numeric_register_value(
+                register_index=config_service.get('trigger.register_id'),
+                value=config_service.get('trigger.revert_value')
+            )
+
+        # Start the background thread
+        thread = threading.Thread(target=reset_value)
+        thread.start()
+
         return jsonify({"status": "success"}), 200
+
     else:
         logger.warning("Invalid key was pressed")
         return jsonify({"error": "Invalid key pressed"}), 400

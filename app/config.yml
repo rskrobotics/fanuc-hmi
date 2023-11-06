@@ -15,7 +15,9 @@ quote_api_url: "https://api.quotable.io/random"
 cache_timeout_seconds: 3600
 trigger:
   value: 1
+  revert_value: 0
   register_id: 10
+  revert_delay_seconds: 5
 mock_robot_data: True
   
 
