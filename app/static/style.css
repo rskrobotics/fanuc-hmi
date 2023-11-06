@@ -78,3 +78,9 @@ body {
     background-color: #f0f0f0;
     font-weight: bold;
 }
+
+
+.message.register-color,
+.message.error-color {
+    font-size: 2em; /* Increase the font size for these specific cases */
+}
