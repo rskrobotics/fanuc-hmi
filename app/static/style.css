@@ -44,7 +44,7 @@ body {
     margin-bottom: 10px;
     border-radius: 15px;
     text-align: center;
-    font-size: clamp(2vw, 5vh, 10vw); /* Adjust values accordingly */
+    font-size: clamp(2vw, 8vh, 10vw); /* Adjust values accordingly */
     font-weight: bold;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     width: 100%; /* Takes full width */
