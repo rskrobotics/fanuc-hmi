@@ -44,14 +44,17 @@ body {
     margin-bottom: 10px;
     border-radius: 15px;
     text-align: center;
-    font-size: calc(1vw + 4vh); /* Scales primarily with screen height */
-    /*font-size: min(max(24px, 8vh), 5vw); !* Clamps the font size between 24px and the smaller of 8vh or 5vw *!*/
+    font-size: clamp(2vw, 5vh, 10vw); /* Adjust values accordingly */
     font-weight: bold;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
     width: 100%; /* Takes full width */
-    max-height: 50vh; /* Maximum half of the viewport height */
-    overflow: hidden; /* Hides the overflowed content, could be 'auto' to show a scrollbar if needed */
+    height: 50vh; /* Takes up 50% of the viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This will center the text vertically and horizontally */
+    overflow: hidden; /* Hide overflow */
 }
+
 
 
 
