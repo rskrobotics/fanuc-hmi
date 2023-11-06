@@ -1,6 +1,6 @@
 import logging
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
 from logging.handlers import RotatingFileHandler
 
 import requests
@@ -45,7 +45,7 @@ scheduler.add_job(
     func=robot_service.fetch_string_registers,
     trigger='interval',
     seconds=config_service.get('fetch_intervals.seconds_string'),
-    next_run_time=datetime.now(),
+    next_run_time=datetime.now() + timedelta(seconds=8),
     max_instances=1
 )
 

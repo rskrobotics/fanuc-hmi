@@ -3,31 +3,32 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f7f6;
+    /* The font size is not specified here; if you want all text 3x bigger, you may need to set a base font size here */
 }
 
 .title-bar {
     background-color: #5b8c85;
     color: #ffffff;
-    padding: 15px 10px;
+    padding: 45px 30px; /* Increased from 15px 10px */
     text-align: center;
-    font-size: 28px;
+    font-size: 84px; /* Increased from 28px */
 }
 
 .container {
-    width: 80%;
-    margin: 30px auto;
+    width: 80%; /* You may want to adjust this if the content doesn't scale as expected */
+    margin: 90px auto; /* Increased from 30px */
     overflow: hidden;
 }
 
 .register-container {
     background: #ffffff;
-    margin-top: 15px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-top: 45px; /* Increased from 15px */
+    padding: 60px; /* Increased from 20px */
+    border-radius: 15px; /* Increased from 5px */
+    box-shadow: 0 15px 45px rgba(0,0,0,0.15); /* Increased the spread and blur */
     display: grid;
     grid-template-columns: auto auto 1fr;
-    gap: 10px;
+    gap: 30px; /* Increased from 10px */
     align-items: center;
 }
 
@@ -38,8 +39,8 @@ body {
 .register-id,
 .register-value,
 .register-comment {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    padding: 30px; /* Increased from 10px */
+    border-bottom: 3px solid #eee; /* Increased from 1px and made it solid for visibility */
 }
 
 .register-id {
@@ -47,13 +48,13 @@ body {
 }
 
 .message {
-    padding: 20px; /* Increase padding */
-    margin-bottom: 20px; /* Increase margin-bottom */
-    border-radius: 5px;
+    padding: 60px; /* Increased from 20px */
+    margin-bottom: 60px; /* Increased from 20px */
+    border-radius: 15px; /* Increased from 5px */
     text-align: center;
-    font-size: 48px; /* Increase font size */
-    font-weight: bold; /* Make it bold */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: add a shadow to lift the message */
+    font-size: 144px; /* Increased from 48px */
+    font-weight: bold; /* Keep it bold */
+    box-shadow: 0 12px 24px rgba(0,0,0,0.3); /* Increased shadow for more emphasis */
 }
 
 .default-color {
@@ -62,10 +63,9 @@ body {
 }
 
 .register-color {
-    /* Updated style for message with an alarming yellow */
     background-color: #ffecb3;
     color: #c48800;
-    border: 1px solid #ffc107; /* Optional: add a border for more emphasis */
+    border: 3px solid #ffc107; /* Increased from 1px and solid for visibility */
 }
 
 .error-color {
