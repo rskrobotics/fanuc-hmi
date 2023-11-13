@@ -7,11 +7,6 @@ body {
     overflow: hidden;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-}
-
 .register-container {
     background: #ffffff;
     margin-top: 1rem; /* Increased from 15px */
@@ -82,32 +77,26 @@ body {
     font-size: 6rem;
 }
 
-.container-with-timer {
-    /*display: flex;*/
-    /*justify-content: space-between;*/
-    /*align-items: flex-start;*/
+.container-with-registers-and-timer {
+    display: flex;
+    width: 80%;
 }
 
 .register-container {
     flex-grow: 1;
     width: 30%;
-    /*display: inline-block;*/
 }
 
 .timer-container {
+    flex-grow: 1;
     float: right;
     width: 30%;
-    /*flex-basis: 40vh;*/
-    /*height: 40vh;*/
     background-color: #f0f0f0;
-    /*flex-direction: column;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     font-size: larger;
 }
 
 .timer-value {
-    font-size: 4rem; /* Larger font for the timer */
+    font-size: 4rem;
 }
 
 
