@@ -66,11 +66,19 @@ def index():
 @app.route('/update-data')
 def update_data():
     all_numeric_registers = robot_service.get_numeric_registers()
-    displayed_numeric_indices = config_service.get(
-        'displayed_registers.numeric')
+    displayed_numeric_indices = config_service.get('displayed_registers.numeric')
+
+    # Extract the value for register 28
+    timer = next((reg for reg in all_numeric_registers if reg.id == 28), None)
+    timer_value = timer.value if timer else None
+
     numeric_registers = [
-        reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices]
-    return render_template('numeric_registers.html', numeric_registers=numeric_registers)
+        reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices and reg.id != 28
+    ]
+    return render_template('numeric_registers.html',
+                           numeric_registers=numeric_registers,
+                           timer_value=timer_value)
+
 
 
 @app.route('/update-message')

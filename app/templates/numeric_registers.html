@@ -1,10 +1,17 @@
-<!-- numeric_registers.html - A fragment of HTML that htmx can load into the page -->
-<div class="register-container">
-  {% for register in numeric_registers %}
-  <div class="register">
-    <span class="register-id">Register: {{ register.id }}</span>
-    <span class="register-value">Value: {{ register.value }}</span>
-    <span class="register-comment">Comment: {{ register.comment }}</span>
-  </div>
-  {% endfor %}
+<div class="container-with-timer">
+    <div class="register-container">
+        {% for register in numeric_registers %}
+            {% if register.id != 28 %}
+                <div class="register">
+                    <span class="register-id">Register: {{ register.id }}</span>
+                    <span class="register-value">Value: {{ register.value }}</span>
+                    <span class="register-comment">Comment: {{ register.comment }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="timer-container">
+        <span class="timer-value">{{ timer_value|int if timer_value is defined else '0' }}s</span>
+    </div>
 </div>
