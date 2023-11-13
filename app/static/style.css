@@ -3,36 +3,39 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f7f6;
-    /* The font size is not specified here; if you want all text 3x bigger, you may need to set a base font size here */
+    width: 100%;
+    overflow: hidden;
 }
 
 .container {
-    width: 80%; /* You may want to adjust this if the content doesn't scale as expected */
-    margin: 90px auto; /* Increased from 30px */
-    overflow: hidden;
+    width: 80%;
+    margin: auto;
 }
 
 .register-container {
     background: #ffffff;
-    margin-top: 15px; /* Increased from 15px */
-    padding: 20px; /* Increased from 20px */
-    border-radius: 15px; /* Increased from 5px */
-    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.15); /* Increased the spread and blur */
+    margin-top: 1rem; /* Increased from 15px */
+    padding: 1rem; /* Increased from 20px */
+    border-radius: 1rem; /* Increased from 5px */
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.15);
     display: grid;
     grid-template-columns: auto auto 1fr;
-    gap: 10px; /* Increased from 10px */
+    gap: 1rem; /* Increased from 10px */
     align-items: center;
+    font-size: 1rem;
 }
 
 .register {
     display: contents;
+    border-bottom: 1rem solid #eee;
+    padding: 1rem;
 }
 
 .register-id,
 .register-value,
 .register-comment {
-    padding: 10px; /* Increased from 10px */
-    border-bottom: 3px solid #eee; /* Increased from 1px and made it solid for visibility */
+    float: left;
+    display: inline;
 }
 
 .register-id {
@@ -40,23 +43,18 @@ body {
 }
 
 .message {
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 15px;
+    border-radius: 1rem;
     text-align: center;
-    font-size: clamp(2vw, 5vh, 10vw); /* Adjust values accordingly */
+    font-size: clamp(2vw, 5vh, 10vw);
     font-weight: bold;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    width: 100%; /* Takes full width */
-    height: 50vh; /* Takes up 50% of the viewport height */
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 50vh;
     display: flex;
     justify-content: center;
-    align-items: center; /* This will center the text vertically and horizontally */
-    overflow: hidden; /* Hide overflow */
+    align-items: center;
+    overflow: hidden;
 }
-
-
-
 
 .default-color {
     background-color: #e7eff6;
@@ -66,7 +64,6 @@ body {
 .register-color {
     background-color: #ffecb3;
     color: #c48800;
-    border: 3px solid #ffc107; /* Increased from 1px and solid for visibility */
 }
 
 .error-color {
@@ -82,33 +79,35 @@ body {
 
 .message.register-color,
 .message.error-color {
-    font-size: 2em; /* Increase the font size for these specific cases */
+    font-size: 6rem;
 }
 
 .container-with-timer {
-    display: flex;
-    justify-content: space-between; /* Distributes space between children */
-    align-items: flex-start; /* Align items to the top */
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*align-items: flex-start;*/
 }
 
 .register-container {
-    flex-grow: 1; /* Allows the container to grow and take available space */
-    margin-right: 20px; /* Adds some space between the register and timer containers */
+    flex-grow: 1;
+    width: 30%;
+    /*display: inline-block;*/
 }
 
 .timer-container {
-    flex-basis: 40vh; /* Gives the timer a fixed width, adjust as needed */
-    height: 40vh; /* Adjust height as needed */
+    float: right;
+    width: 30%;
+    /*flex-basis: 40vh;*/
+    /*height: 40vh;*/
     background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto; /* This should not be necessary with 'justify-content: space-between', but can be kept */
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    font-size: larger;
 }
 
 .timer-value {
-    font-size: 9rem; /* Larger font for the timer */
+    font-size: 4rem; /* Larger font for the timer */
 }
 
 

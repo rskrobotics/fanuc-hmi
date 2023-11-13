@@ -1,11 +1,11 @@
 <div class="container-with-timer">
     <div class="register-container">
         {% for register in numeric_registers %}
-                <div class="register">
-                    <span class="register-id">Register: {{ register.id }}</span>
-                    <span class="register-value">Value: {{ register.value }}</span>
-                    <span class="register-comment">Comment: {{ register.comment }}</span>
-                </div>
+                <span class="register">
+                    <span class="register-id">Register {{ register.id }}</span>
+                    <span class="register-value">Value {{ register.value }}</span>
+                    <span class="register-comment">{{ register.comment }}</span>
+                </span>
         {% endfor %}
     </div>
 
