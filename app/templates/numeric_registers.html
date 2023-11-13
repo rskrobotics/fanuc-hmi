@@ -1,13 +1,11 @@
 <div class="container-with-timer">
     <div class="register-container">
         {% for register in numeric_registers %}
-            {% if register.id != 28 %}
                 <div class="register">
                     <span class="register-id">Register: {{ register.id }}</span>
                     <span class="register-value">Value: {{ register.value }}</span>
                     <span class="register-comment">Comment: {{ register.comment }}</span>
                 </div>
-            {% endif %}
         {% endfor %}
     </div>
 

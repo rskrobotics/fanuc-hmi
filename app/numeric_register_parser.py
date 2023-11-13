@@ -19,7 +19,7 @@ def parse_html_content_onto_numeric_registers(html_content):
         comment_input = cols[1].find('input', {'name': lambda x: x and x.startswith('strComment')})
         comment = comment_input['value'] if comment_input else ''
 
-        value_input = cols[2].find('input', {'name': lambda x: x and x.startswith('iVal')})
+        value_input = cols[2].find('input', {'name': lambda x: x and (x.startswith('iVal') or x.startswith('rVal'))})
         try:
             value = float(value_input['value']) if value_input else 0.0
         except ValueError:

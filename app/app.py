@@ -73,8 +73,9 @@ def update_data():
     timer_value = timer.value if timer else None
 
     numeric_registers = [
-        reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices and reg.id != 28
+        reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices
     ]
+    print(f"Timer_value: {timer_value}")
     return render_template('numeric_registers.html',
                            numeric_registers=numeric_registers,
                            timer_value=timer_value)
