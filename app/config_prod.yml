@@ -1,0 +1,23 @@
+robot:
+  ip: "172.18.1.201"
+displayed_registers:
+  numeric:
+    - 10
+    - 31
+    - 89
+    - 90
+    - 21 
+  string:
+fetch_intervals:
+  seconds_numeric: 1
+  seconds_string: 60
+quote_api_url: "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json"
+cache_timeout_seconds: 3600
+trigger:
+  value: 1
+  revert_value: 0
+  register_id: 10
+  revert_delay_seconds: 5
+mock_robot_data: False
+  
+

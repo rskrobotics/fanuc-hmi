@@ -1,17 +1,17 @@
-import yaml
 import os
-
+import yaml
 
 class ConfigService:
-    def __init__(self, config_file='config.yml'):
-        self.config_file = config_file
-        self.config_data = self._load_config_file()
+    def __init__(self):
+        environment = os.environ.get('FLASK_ENV', 'development')
+        config_file = 'config_prod.yml' if environment == 'production' else 'config_dev.yml'
+        self.config_data = self._load_config_file(config_file)
 
-    def _load_config_file(self):
-        if not os.path.exists(self.config_file):
-            raise FileNotFoundError(f"The configuration file {self.config_file} does not exist.")
+    def _load_config_file(self, config_file):
+        if not os.path.exists(config_file):
+            raise FileNotFoundError(f"The configuration file {config_file} does not exist.")
 
-        with open(self.config_file, 'r') as file:
+        with open(config_file, 'r') as file:
             return yaml.safe_load(file)
 
     def get(self, property_path, default=None):
