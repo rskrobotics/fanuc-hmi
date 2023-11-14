@@ -8,7 +8,6 @@
                 </span>
         {% endfor %}
     </div>
-
     <div class="timer-container">
     <span>
         {{ '%02d.%02d' % (timer_value|int, ((timer_value - timer_value|int) * 100)|int) if timer_value is defined else '00.00' }}
