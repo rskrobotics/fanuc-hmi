@@ -1,9 +1,13 @@
+import logging
 import os
 import yaml
+
+logger = logging.getLogger(__name__)
 
 class ConfigService:
     def __init__(self):
         environment = os.environ.get('FLASK_ENV', 'development')
+        logger.info(f"Environment is: {environment}")
         config_file = 'config_prod.yml' if environment == 'production' else 'config_dev.yml'
         self.config_data = self._load_config_file(config_file)
 
