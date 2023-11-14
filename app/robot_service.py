@@ -27,7 +27,7 @@ class RobotService:
         if self.mock_data:
             with self.lock:
                 for i in range(200):
-                    self.numeric_registers[i].value = random.randint(0, 100)
+                    self.numeric_registers[i].value = round(random.uniform(0, 100), 2)
             return
         try:
             response = requests.get(numeric_url)
@@ -44,7 +44,6 @@ class RobotService:
 
     def fetch_string_registers(self):
         logger.info("Fetching string registers...")
-        print(f"Fetching string registers")
         if self.mock_data:
             return
         string_url = f'http://{self.ip_address}/karel/ComGet?sFc=30'

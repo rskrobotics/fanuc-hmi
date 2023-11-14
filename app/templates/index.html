@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/htmx.org@1.6.0"></script>
     <script>
         document.addEventListener('keydown', function (event) {
-            if (/^[a-z]$/i.test(event.key)) { // This regex matches any single character from a to z, case insensitive
+            if (/^[a-z]$/i.test(event.key)) { // This regex matches any single character from a to z, case-insensitive
                 fetch('/keypress', {
                     method: 'POST',
                     headers: {
@@ -28,14 +28,8 @@
     </script>
 </head>
 <body>
-<!-- This div will be replaced entirely by htmx -->
-<div id="message-container" hx-get="/update-message" hx-trigger="load, every 2s" hx-swap="innerHTML">
-    <!-- The server will return the entire .title-bar with the message inside -->
-</div>
+<div hx-get="/update-message" hx-trigger="load, every 20s" hx-swap="innerHTML"></div>
 
-<div id="numeric-registers" hx-get="/update-data" hx-trigger="load, every 2s" hx-swap="innerHTML"
-     class="register-container">
-    <!-- Numeric register data will be loaded here by htmx -->
-</div>
+<div hx-get="/update-data" hx-trigger="load, every 20s" hx-swap="innerHTML"></div>
 </body>
 </html>
