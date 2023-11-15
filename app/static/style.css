@@ -30,26 +30,20 @@ html, body {
 }
 
 #clock > div {
-    /*margin: 0.5em 0; !* Spacing between time units *!*/
-    /* Optional: Different color or style for each time unit */
+    /*margin: 0.5em 0;*/ /* Spacing between time units */
+    /* Uncomment above line if you need margin */
+}
 
-    &:nth-child(1) {
-        color: #e74c3c;
-    }
+#clock > div:nth-child(1) {
+    color: #e74c3c; /* Hours */
+}
 
-    /* Hours */
+#clock > div:nth-child(2) {
+    color: #2ecc71; /* Minutes */
+}
 
-    &:nth-child(2) {
-        color: #2ecc71;
-    }
-
-    /* Minutes */
-
-    &:nth-child(3) {
-        color: #3498db;
-    }
-
-    /* Seconds */
+#clock > div:nth-child(3) {
+    color: #3498db; /* Seconds */
 }
 
 
