@@ -35,7 +35,7 @@ logger.debug('This is a debug message that will go into the hmi.log file')
 
 config_service = ConfigService()
 robot_service = RobotService(ip_address=config_service.get('robot.ip'),
-                             mock_data=config_service.get('mock_robot_data', True))
+                             mock_data=config_service.get('mock_robot_data'))
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=robot_service.fetch_numeric_registers,
@@ -51,7 +51,7 @@ scheduler.add_job(
     max_instances=1
 )
 
-cache_timeout = config_service.get('cache_timeout_seconds', 3600)
+cache_timeout = config_service.get('cache_timeout_seconds')
 app.config['CACHE_TYPE'] = 'SimpleCache'
 app.config['CACHE_DEFAULT_TIMEOUT'] = cache_timeout
 
@@ -82,8 +82,7 @@ def update_data():
 
 @app.route('/update-message')
 def update_message():
-    quote_api_url = config_service.get(
-        'quote_api_url', "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json")
+    quote_api_url = config_service.get('quote_api_url')
     message = cache.get('cached_message')
     template_color_class = 'default-color'
 
@@ -144,7 +143,8 @@ def keypress():
         )
 
         def reset_value():
-            time.sleep(config_service.get('trigger.revert_delay_seconds'))
+            delay = float(config_service.get('trigger.revert_delay_seconds'))
+            time.sleep(delay)
             robot_service.set_numeric_register_value(
                 register_index=config_service.get('trigger.register_id'),
                 value=config_service.get('trigger.revert_value')

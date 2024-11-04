@@ -4,6 +4,10 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
+
+class ConfigurationError(Exception):
+    pass
+
 class ConfigService:
     def __init__(self):
         environment = os.environ.get('FLASK_ENV', 'development')
@@ -18,12 +22,12 @@ class ConfigService:
         with open(config_file, 'r') as file:
             return yaml.safe_load(file)
 
-    def get(self, property_path, default=None):
+
+    def get(self, property_path):
         keys = property_path.split('.')
         value = self.config_data
         for key in keys:
-            if value is not None and key in value:
-                value = value[key]
-            else:
-                return default
+            if value is None or key not in value:
+                raise ConfigurationError(f"Configuration not found for path: {property_path}")
+            value = value[key]
         return value
