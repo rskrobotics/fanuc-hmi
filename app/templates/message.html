@@ -1,5 +1,5 @@
 <div
-    class="p-8 flex items-center justify-center h-full w-full border-2 {% if template_color_class == 'register-color' %} bg-yellow-100 text-yellow-700 border-yellow-300 {% elif template_color_class == 'error-color' %} bg-red-100 text-red-700 border-red-300 {% elif template_color_class == 'default-color' %} bg-gray-50 text-gray-800 border-gray-300 {% else %} bg-gray-50 text-gray-800 border-gray-300 {% endif %}"
+    class="h-full w-full flex items-center justify-center p-8 {% if template_color_class == 'register-color' %} bg-yellow-200 text-yellow-800 {% elif template_color_class == 'error-color' %} bg-red-200 text-red-800 {% else %} bg-gray-200 text-gray-800 {% endif %}"
 >
-    <span class="text-8xl">{{ message }}</span>
+    <span class="text-8xl font-light">{{ message }}</span>
 </div>

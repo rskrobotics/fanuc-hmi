@@ -1,17 +1,18 @@
-<!-- registers.html -->
 <div
     id="registers"
     hx-swap-oob="true"
-    class="col-span-7 h-full overflow-auto p-4"
+    class="col-span-7 h-full overflow-auto p-4 rounded-lg"
 >
     <div class="grid grid-cols-1 gap-4">
         {% for register in numeric_registers %}
         <div
-            class="flex items-center justify-between p-4 bg-gray-200 rounded-lg shadow text-6xl"
+            class="flex items-center p-4 bg-gray-200 rounded-lg shadow text-6xl"
         >
-            <span class="text-blue-500">R[{{ register.id }}]</span>
-            <span class="text-black-500">{{ register.value }}</span>
-            <span class="text-gray-500">{{ register.comment }}</span>
+            <span class="text-blue-500 w-1/6">R[{{ register.id }}]</span>
+            <span class="text-black-500 w-1/6 text-right tabular-nums"
+                >{{ register.value }}</span
+            >
+            <span class="text-gray-500 ml-auto">{{ register.comment }}</span>
         </div>
         {% endfor %}
     </div>
