@@ -1,3 +1,4 @@
+<!-- registers.html -->
 <div
     id="registers"
     hx-swap-oob="true"
@@ -14,17 +15,4 @@
         </div>
         {% endfor %}
     </div>
-</div>
-
-<!-- Timer Section Content -->
-<div
-    id="timer"
-    hx-swap-oob="true"
-    class="flex flex-col items-center justify-center bg-blue-900 text-white font-bold shadow-md rounded-2xl border-4 border-white h-full col-span-3"
->
-    <p class="text-5xl mb-4">Last cycle time</p>
-    <span class="text-8xl font-bold">
-        {{ '%02d.%02d' % ( timer_value|int, ((timer_value - timer_value|int) *
-        100)|int ) if timer_value is defined else '00.00' }}
-    </span>
 </div>

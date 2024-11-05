@@ -13,14 +13,18 @@
             <div class="grid grid-cols-10 h-[40vh]">
                 <!-- Message Section (70% width) -->
                 <div
+                    id="message"
                     class="flex items-center justify-center col-span-7 h-full w-full"
                     hx-get="/update-message"
                     hx-trigger="load, every 2s"
                     hx-swap="innerHTML"
-                ></div>
+                >
+                    {% include 'message.html' %}
+                </div>
+
                 <!-- Clock Section (30% width) -->
                 <div
-                    class="flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-200 shadow-lg rounded-2xl border border-gray-300 h-full col-span-3 text-8xl"
+                    class="flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-200 shadow-lg border border-gray-300 h-full col-span-3 text-9xl"
                 >
                     <div id="hours" class="text-red-500 font-bold">00</div>
                     <div id="minutes" class="text-green-500 font-bold">00</div>
@@ -30,38 +34,11 @@
 
             <!-- Registers and Timer Section -->
             <div class="grid grid-cols-10 h-full">
-                <!-- Registers Section (70% width) -->
-                <div id="registers" class="col-span-7 h-full overflow-auto p-4">
-                    <div class="grid grid-cols-1 gap-4">
-                        {% for register in numeric_registers %}
-                        <div
-                            class="flex items-center justify-between p-4 bg-gray-200 rounded-lg shadow"
-                        >
-                            <span class="text-blue-500"
-                                >R[{{ register.id }}]</span
-                            >
-                            <span class="text-green-500"
-                                >{{ register.value }}</span
-                            >
-                            <span class="text-gray-500"
-                                >{{ register.comment }}</span
-                            >
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                <!-- Include Registers Template -->
+                {% include 'registers.html' %}
 
-                <!-- Timer Section (30% width) -->
-                <div
-                    id="timer"
-                    class="flex items-center justify-center bg-blue-900 text-white text-8xl font-bold shadow-md rounded-2xl border-4 border-white h-full col-span-3"
-                >
-                    <span class="text-8xl font-bold">
-                        {{ '%02d.%02d' % ( timer_value|int, ((timer_value -
-                        timer_value|int) * 100)|int ) if timer_value is defined
-                        else '00.00' }}
-                    </span>
-                </div>
+                <!-- Include Timer Template -->
+                {% include 'timer.html' %}
             </div>
         </div>
 
