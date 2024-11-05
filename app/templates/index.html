@@ -1,62 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Fanuc Robot Interface</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="https://unpkg.com/htmx.org@1.6.0"></script>
-    <script>
-        function updateClock() {
-            const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
+    <head>
+        <meta charset="UTF-8" />
+        <title>Fanuc Robot Interface</title>
+        <script src="/static/htmx.min.js"></script>
+        <script src="/static/clock.js"></script>
+        <link rel="stylesheet" href="/static/tailwind.min.css" />
+    </head>
+    <body class="h-screen bg-green-500">
+        <div class="grid h-full grid-rows-[2fr_3fr]">
+            <!-- Message and Clock Section -->
+            <div class="grid grid-cols-10 h-[40vh]">
+                <!-- Message Section (70% width) -->
+                <div
+                    id="message"
+                    class="flex items-center justify-center col-span-7 h-full w-full"
+                    hx-get="/update-message"
+                    hx-trigger="load, every 2s"
+                    hx-swap="innerHTML"
+                >
+                    {% include 'message.html' %}
+                </div>
 
-            hours = hours < 10 ? '0' + hours : hours;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
+                <!-- Clock Section (30% width) -->
+                <div
+                    class="flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-200 shadow-lg border border-gray-300 h-full col-span-3 text-9xl"
+                >
+                    <div id="hours" class="text-red-500 font-bold">00</div>
+                    <div id="minutes" class="text-green-500 font-bold">00</div>
+                    <div id="seconds" class="text-blue-500 font-bold">00</div>
+                </div>
+            </div>
 
-            // Update each part of the clock
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes;
-            document.getElementById('seconds').textContent = seconds;
-        }
+            <!-- Registers and Timer Section -->
+            <div class="grid grid-cols-10 h-full">
+                <!-- Include Registers Template -->
+                {% include 'registers.html' %}
 
-        window.onload = function () {
-            setInterval(updateClock, 1000);
-        };
+                <!-- Include Timer Template -->
+                {% include 'timer.html' %}
+            </div>
+        </div>
 
-
-        document.addEventListener('keydown', function (event) {
-            if (/^[a-z]$/i.test(event.key)) { // This regex matches any single character from a to z, case-insensitive
-                fetch('/keypress', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({key: event.key.toLowerCase()})
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok: ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => console.log(data))
-                    .catch(error => console.error('Fetch error:', error));
-            }
-        });
-    </script>
-</head>
-<body>
-<div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-    <div class="message" hx-get="/update-message" hx-trigger="load, every 2s" hx-swap="innerHTML"></div>
-    <div id="clock">
-        <div id="hours">00</div>
-        <div id="minutes">00</div>
-        <div id="seconds">00</div>
-    </div>
-</div>
-<div hx-get="/update-data" hx-trigger="load, every 2s" hx-swap="innerHTML"></div>
-</body>
+        <!-- Hidden div to trigger the HTMX request -->
+        <div
+            hx-get="/update-data"
+            hx-trigger="load, every 2s"
+            hx-swap="none"
+        ></div>
+    </body>
 </html>

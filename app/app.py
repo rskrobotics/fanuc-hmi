@@ -75,9 +75,24 @@ def update_data():
     numeric_registers = [
         reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices
     ]
-    return render_template('content.html',
-                           numeric_registers=numeric_registers,
-                           timer_value=timer_value)
+
+    # Render the 'registers.html' template with the numeric registers
+    registers_html = render_template(
+        'registers.html',
+        numeric_registers=numeric_registers
+    )
+
+    # Render the 'timer.html' template with the timer value
+    timer_html = render_template(
+        'timer.html',
+        timer_value=timer_value
+    )
+
+    # Concatenate the rendered templates
+    response_html = registers_html + timer_html
+
+    # Return the concatenated HTML
+    return response_html
 
 
 @app.route('/update-message')
