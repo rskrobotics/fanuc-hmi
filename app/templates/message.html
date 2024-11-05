@@ -1,3 +1,5 @@
-<div class="{{ template_color_class }}">
-  {{ message }}
+<div
+    class="p-8 flex items-center justify-center h-full w-full {% if template_color_class == 'register-color' %} bg-yellow-100 text-yellow-700 {% elif template_color_class == 'error-color' %} bg-red-100 text-red-700 {% elif template_color_class == 'default-color' %} bg-gray-50 text-gray-800 {% else %} bg-gray-50 text-gray-800 {% endif %}"
+>
+    <span class="text-8xl">{{ message }}</span>
 </div>

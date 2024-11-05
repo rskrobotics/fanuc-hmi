@@ -164,7 +164,7 @@ def keypress():
 if __name__ == '__main__':
     scheduler.start()
     try:
-        app.run(debug=False, threaded=True, host='0.0.0.0', use_reloader=False)
+        app.run(debug=True, threaded=True, host='0.0.0.0', use_reloader=False)
     except (KeyboardInterrupt, SystemExit):
         pass
     finally:
