@@ -4,7 +4,9 @@
         hx-swap-oob="true"
         class="flex flex-col items-center justify-center bg-gradient-to-b from-blue-800 to-blue-950 text-white font-bold shadow-lg rounded-xl border-2 border-blue-700/50 h-full p-8"
     >
-        <p class="text-5xl mb-6 tracking-wide opacity-90">Last cycle time</p>
+        <p class="text-6xl mb-6 font-bold tracking-wide opacity-90">
+            Last cycle time
+        </p>
         <span class="text-8xl font-bold tracking-wider">
             {{ '%02d.%02d' % ( timer_value|int, ((timer_value - timer_value|int)
             * 100)|int ) if timer_value is defined else '00.00' }} S
