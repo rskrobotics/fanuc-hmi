@@ -6,12 +6,13 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 import httpx
-from config import get_settings
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from robot_service import RobotService
+
+from src.config import get_settings
+from src.robot_service import RobotService
 
 # Logging setup
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +26,10 @@ handler.setLevel(logging.DEBUG)
 root_logger = logging.getLogger()
 root_logger.addHandler(handler)
 root_logger.setLevel(logging.DEBUG)
+
+# Silence noisy loggers
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 
@@ -150,8 +155,9 @@ async def update_message(request: Request):
                 else:
                     message = "Default Message"
                     cache_set("cached_message", message, settings.cache_timeout_seconds)
-        except httpx.RequestError as e:
-            logger.error(f"Request failed: {e}")
+        except (httpx.RequestError, ValueError) as e:
+            # ValueError catches JSON decode errors (malformed API responses)
+            logger.error(f"Quote fetch failed: {e}")
             message = "Default Message"
             cache_set("cached_message", message, settings.cache_timeout_seconds)
 
@@ -227,7 +233,11 @@ async def keypress(request: Request):
         return JSONResponse({"error": "Invalid key pressed"}, status_code=400)
 
 
-if __name__ == "__main__":
+def run():
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=5000)
+
+
+if __name__ == "__main__":
+    run()

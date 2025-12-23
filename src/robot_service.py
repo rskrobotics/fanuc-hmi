@@ -3,10 +3,11 @@ import logging
 import random
 
 import httpx
-from domain.numeric_register import NumericRegister
-from domain.string_register import StringRegister
-from numeric_register_parser import parse_html_content_onto_numeric_registers
-from string_register_parser import parse_html_content_onto_string_registers
+
+from src.domain.numeric_register import NumericRegister
+from src.domain.string_register import StringRegister
+from src.numeric_register_parser import parse_html_content_onto_numeric_registers
+from src.string_register_parser import parse_html_content_onto_string_registers
 
 logger = logging.getLogger(__name__)
 
