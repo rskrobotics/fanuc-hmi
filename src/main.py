@@ -1,8 +1,7 @@
 import asyncio
-import logging
 import string
+import time
 from contextlib import asynccontextmanager
-from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 import httpx
@@ -12,26 +11,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from src.config import get_settings
+from src.logging_config import get_logger, setup_logging
 from src.robot_service import RobotService
 
-# Logging setup
-logging.basicConfig(level=logging.INFO)
-
-handler = RotatingFileHandler("hmi.log", maxBytes=10000, backupCount=3)
-formatter = logging.Formatter(
-    "%(asctime)s %(levelname)s: %(message)s [in %(module)s:%(lineno)d]"
-)
-handler.setFormatter(formatter)
-handler.setLevel(logging.DEBUG)
-root_logger = logging.getLogger()
-root_logger.addHandler(handler)
-root_logger.setLevel(logging.DEBUG)
-
-# Silence noisy loggers
-logging.getLogger("httpcore").setLevel(logging.WARNING)
-logging.getLogger("httpx").setLevel(logging.WARNING)
-
-logger = logging.getLogger(__name__)
+setup_logging()
+logger = get_logger(__name__)
 
 # Settings and services
 settings = get_settings()
@@ -47,14 +31,14 @@ _cache: dict[str, tuple[str, float]] = {}
 def cache_get(key: str) -> str | None:
     if key in _cache:
         value, expiry = _cache[key]
-        if asyncio.get_event_loop().time() < expiry:
+        if time.monotonic() < expiry:
             return value
         del _cache[key]
     return None
 
 
 def cache_set(key: str, value: str, timeout: int) -> None:
-    expiry = asyncio.get_event_loop().time() + timeout
+    expiry = time.monotonic() + timeout
     _cache[key] = (value, expiry)
 
 
@@ -77,14 +61,15 @@ async def poll_string_registers():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: create background tasks
+    # Startup: initialize services and create background tasks
+    await robot_service.start()
     numeric_task = asyncio.create_task(poll_numeric_registers())
     string_task = asyncio.create_task(poll_string_registers())
-    logger.info("Background polling tasks started")
+    logger.info("background_polling_started")
 
     yield
 
-    # Shutdown: cancel background tasks
+    # Shutdown: cancel background tasks and cleanup
     numeric_task.cancel()
     string_task.cancel()
     try:
@@ -95,7 +80,8 @@ async def lifespan(app: FastAPI):
         await string_task
     except asyncio.CancelledError:
         pass
-    logger.info("Background polling tasks stopped")
+    await robot_service.stop()
+    logger.info("background_polling_stopped")
 
 
 app = FastAPI(lifespan=lifespan)
@@ -124,15 +110,13 @@ async def update_data(request: Request):
         reg for reg in all_numeric_registers if reg.id in displayed_numeric_indices
     ]
 
-    registers_html = templates.TemplateResponse(
-        "registers.html",
-        {"request": request, "numeric_registers": numeric_registers},
-    ).body.decode()
+    registers_html = templates.get_template("registers.html").render(
+        {"request": request, "numeric_registers": numeric_registers}
+    )
 
-    timer_html = templates.TemplateResponse(
-        "timer.html",
-        {"request": request, "timer_value": timer_value},
-    ).body.decode()
+    timer_html = templates.get_template("timer.html").render(
+        {"request": request, "timer_value": timer_value}
+    )
 
     return HTMLResponse(content=registers_html + timer_html)
 
@@ -157,7 +141,7 @@ async def update_message(request: Request):
                     cache_set("cached_message", message, settings.cache_timeout_seconds)
         except (httpx.RequestError, ValueError) as e:
             # ValueError catches JSON decode errors (malformed API responses)
-            logger.error(f"Quote fetch failed: {e}")
+            logger.error("quote_fetch_failed", error=str(e))
             message = "Default Message"
             cache_set("cached_message", message, settings.cache_timeout_seconds)
 
@@ -209,7 +193,7 @@ async def keypress(request: Request):
     data = await request.json()
 
     if data and data.get("key", "").lower() in string.ascii_lowercase:
-        logger.info(f"{data['key']} key was pressed")
+        logger.info("keypress", key=data["key"])
 
         await robot_service.set_numeric_register_value(
             register_index=settings.trigger.register_id,
@@ -229,14 +213,14 @@ async def keypress(request: Request):
         return JSONResponse({"status": "success"}, status_code=200)
 
     else:
-        logger.warning("Invalid key was pressed")
+        logger.warning("invalid_keypress")
         return JSONResponse({"error": "Invalid key pressed"}, status_code=400)
 
 
 def run():
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=5000, log_config=None)
 
 
 if __name__ == "__main__":

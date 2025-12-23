@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class RobotConfig(BaseModel):
@@ -39,9 +39,7 @@ class Settings(BaseSettings):
     trigger: TriggerConfig = TriggerConfig()
     mock_robot: bool = False
 
-    class Config:
-        env_prefix = ""
-        extra = "ignore"
+    model_config = SettingsConfigDict(env_prefix="", extra="ignore")
 
 
 def load_yaml_config() -> dict:

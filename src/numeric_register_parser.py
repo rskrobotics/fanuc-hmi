@@ -1,12 +1,13 @@
 from bs4 import BeautifulSoup
 
 from src.domain.numeric_register import NumericRegister
-from src.mocks.mock_numeric_response import MockNumericResponse
 
 
-def parse_html_content_onto_numeric_registers(html_content):
+def parse_html_content_onto_numeric_registers(
+    html_content: str,
+) -> list[NumericRegister]:
     soup = BeautifulSoup(html_content, "html.parser")
-    registers = []
+    registers: list[NumericRegister] = []
 
     for row in soup.find_all("tr")[1:]:
         cols = row.find_all("td")
@@ -33,11 +34,3 @@ def parse_html_content_onto_numeric_registers(html_content):
         registers.append(NumericRegister(identifier, value, comment))
 
     return registers
-
-
-if __name__ == "__main__":
-    html_content = MockNumericResponse
-    registers = parse_html_content_onto_numeric_registers(html_content)
-
-    for reg in registers:
-        print(reg)

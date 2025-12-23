@@ -1,12 +1,11 @@
 from bs4 import BeautifulSoup
 
 from src.domain.string_register import StringRegister
-from src.mocks.mock_string_response import MockStringResponse
 
 
-def parse_html_content_onto_string_registers(html_content):
+def parse_html_content_onto_string_registers(html_content: str) -> list[StringRegister]:
     soup = BeautifulSoup(html_content, "html.parser")
-    registers = []
+    registers: list[StringRegister] = []
 
     for row in soup.find_all("tr")[1:]:
         cols = row.find_all("td")
@@ -16,21 +15,16 @@ def parse_html_content_onto_string_registers(html_content):
         identifier_text = cols[0].get_text(strip=True)
         identifier = int(identifier_text.strip("SR[]"))
 
-        comment = cols[1].find(
+        comment_input = cols[1].find(
             "input", {"name": lambda x: x and x.startswith("strComment")}
-        )["value"]
-        value = cols[2].find("input", {"name": lambda x: x and x.startswith("iVal")})[
-            "value"
-        ]
+        )
+        comment = comment_input["value"] if comment_input else ""
+
+        value_input = cols[2].find(
+            "input", {"name": lambda x: x and x.startswith("iVal")}
+        )
+        value = value_input["value"] if value_input else ""
 
         registers.append(StringRegister(identifier, value, comment))
 
     return registers
-
-
-if __name__ == "__main__":
-    html_content = MockStringResponse
-    registers = parse_html_content_onto_string_registers(html_content)
-
-    for reg in registers:
-        print(reg)
