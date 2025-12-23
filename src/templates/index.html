@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Fanuc Robot Interface</title>
+        <link rel="stylesheet" href="/static/bulma.min.css" />
+        <link rel="stylesheet" href="/static/hmi.css" />
         <script src="/static/htmx.min.js"></script>
         <script src="/static/keypress_and_clock.js"></script>
-        <link rel="stylesheet" href="/static/tailwind.min.css" />
     </head>
-    <body class="h-screen bg-green-500">
-        <div
-            id="alert-overlay"
-            class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center text-white text-9xl font-bold"
-            style="display: none; z-index: 50"
-        >
+    <body>
+        <div id="alert-overlay" class="alert-overlay">
             A key has been pressed!
         </div>
-        <div class="grid h-full grid-rows-[2fr_3fr]">
-            <div class="grid grid-cols-10 h-[40vh]">
+
+        <div class="hmi-fullscreen">
+            <!-- Top row: Message + Clock -->
+            <div class="columns is-gapless is-mobile hmi-row-top">
                 <div
                     id="message"
-                    class="flex items-center justify-center col-span-7 h-full w-full"
+                    class="column is-8"
                     hx-get="/update-message"
                     hx-trigger="load, every 2s"
                     hx-swap="innerHTML"
@@ -27,16 +27,21 @@
                     {% include 'message.html' %}
                 </div>
 
-                <div
-                    class="flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-200 shadow-lg border border-gray-300 h-full col-span-3 text-9xl"
-                >
-                    <div id="hours" class="text-red-500 font-bold">00</div>
-                    <div id="minutes" class="text-green-500 font-bold">00</div>
-                    <div id="seconds" class="text-blue-500 font-bold">00</div>
+                <div class="column is-4" style="padding-left: 16px !important">
+                    <div class="clock-panel">
+                        <div class="clock-display">
+                            <span id="hours" class="clock-value">00</span>
+                            <span class="clock-separator">:</span>
+                            <span id="minutes" class="clock-value">00</span>
+                            <span class="clock-separator">:</span>
+                            <span id="seconds" class="clock-value">00</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-10 h-full">
+            <!-- Bottom row: Registers + Timer -->
+            <div class="columns is-gapless is-mobile hmi-row-bottom">
                 {% include 'registers.html' %} {% include 'timer.html' %}
             </div>
         </div>
