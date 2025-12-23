@@ -1,0 +1,15 @@
+<div
+    id="timer"
+    hx-swap-oob="true"
+    class="column is-4 timer-panel"
+    style="margin-left: 16px"
+>
+    <p class="timer-label">Last cycle time</p>
+    <div>
+        <span class="timer-value"
+            >{{ '%02d.%02d' % (timer_value|int, ((timer_value - timer_value|int)
+            * 100)|int) if timer_value is defined else '00.00' }}</span
+        >
+        <span class="timer-unit">sec</span>
+    </div>
+</div>

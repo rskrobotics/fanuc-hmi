@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Fanuc Robot Interface</title>
+        <link rel="stylesheet" href="/static/bulma.min.css" />
+        <link rel="stylesheet" href="/static/hmi.css" />
+        <script src="/static/htmx.min.js"></script>
+        <script src="/static/keypress_and_clock.js"></script>
+    </head>
+    <body>
+        <div id="alert-overlay" class="alert-overlay">
+            A key has been pressed!
+        </div>
+
+        <div class="hmi-fullscreen">
+            <!-- Top row: Message + Clock -->
+            <div class="columns is-gapless is-mobile hmi-row-top">
+                <div
+                    id="message"
+                    class="column is-8"
+                    hx-get="/update-message"
+                    hx-trigger="load, every 2s"
+                    hx-swap="innerHTML"
+                >
+                    {% include 'message.html' %}
+                </div>
+
+                <div class="column is-4" style="padding-left: 16px !important">
+                    <div class="clock-panel">
+                        <div class="clock-display">
+                            <span id="hours" class="clock-value">00</span>
+                            <span class="clock-separator">:</span>
+                            <span id="minutes" class="clock-value">00</span>
+                            <span class="clock-separator">:</span>
+                            <span id="seconds" class="clock-value">00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom row: Registers + Timer -->
+            <div class="columns is-gapless is-mobile hmi-row-bottom">
+                {% include 'registers.html' %} {% include 'timer.html' %}
+            </div>
+        </div>
+
+        <div
+            hx-get="/update-data"
+            hx-trigger="load, every 2s"
+            hx-swap="none"
+        ></div>
+    </body>
+</html>

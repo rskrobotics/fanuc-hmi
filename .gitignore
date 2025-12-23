@@ -29,5 +29,6 @@ ENV/
 htmlcov/
 .pytest_cache/
 
-# Your specific log files
-app/hmi.log*
+# Log files
+*.log
+*.log.*
