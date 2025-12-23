@@ -115,14 +115,17 @@ body {
         var(--shadow-md),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
     border: var(--border-subtle);
+    overflow: hidden;
 }
 
 .message-text {
-    font-size: 5.5rem;
+    font-size: clamp(2rem, 5vw, 5.5rem);
     font-weight: 700;
     color: var(--hmi-text);
     text-align: center;
     line-height: 1.2;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 /* Message states */

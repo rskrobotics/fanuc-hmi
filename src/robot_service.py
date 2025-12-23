@@ -51,7 +51,13 @@ class RobotService:
         if self.mock_data:
             async with self._lock:
                 for i in range(200):
-                    self.numeric_registers[i].value = round(random.uniform(0, 100), 2)
+                    # R[31] controls message display: 0 = show quotes, >0 = show string register
+                    if i == 30:  # index 30 = R[31]
+                        self.numeric_registers[i].value = 0
+                    else:
+                        self.numeric_registers[i].value = round(
+                            random.uniform(0, 100), 2
+                        )
             return
 
         try:
