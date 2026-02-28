@@ -2,7 +2,7 @@
     {% for register in numeric_registers %}
     <div class="register-item">
         <span class="register-id">R[{{ register.id }}]</span>
-        <span class="register-value">{{ register.value }}</span>
+        <span class="register-value">{{ register.value | int if register.value == register.value | int else register.value }}</span>
         <span class="register-comment">{{ register.comment }}</span>
     </div>
     {% endfor %}
